@@ -6,9 +6,9 @@ interface OreOptions {
 class Ore {
   private url: string;
   private headers?: HeadersInit;
-  private streamEnded: boolean = false;
-  private retryCount: number = 0;
-  private maxRetries: number = 3;
+  private streamEnded = false;
+  private retryCount = 0;
+  private maxRetries = 3;
 
   constructor(options: OreOptions) {
     this.url = options.url;
@@ -39,7 +39,7 @@ class Ore {
         const reader = response.body?.getReader();
         const decoder = new TextDecoder("utf-8");
         let buffer = "";
-        const processText = ({
+        const _processText = ({
           done,
           value,
         }: ReadableStreamReadResult<Uint8Array>) => {
@@ -57,7 +57,7 @@ class Ore {
 
           onBufferReceived(buffer, parts);
 
-          reader?.read().then(processText);
+          reader?.read().then(_processText);
         };
         reader?.read().then();
       } catch (error) {
@@ -81,3 +81,5 @@ class Ore {
     fetchWithRetry();
   }
 }
+
+export { Ore, OreOptions };
