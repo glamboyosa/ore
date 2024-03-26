@@ -1,5 +1,8 @@
 # Ore
 
+> [!IMPORTANT]
+> It is a WIP.
+
 Ore is a JavaScript / TypeScript package that simplifies the consumption of Server-Sent Events (SSE) in web applications. It provides an easy-to-use interface for establishing SSE connections, handling incoming events, and implementing retry strategies in case of connection failures.
 
 ## Motivation
