@@ -1,10 +1,13 @@
 # FastAPI Streaming Server
 
+Python example FastAPI SSE server
+
 ## Prerequisites
 
 Before running the FastAPI server, ensure that you have the following installed:
 
 - Docker
+- Docker Compose
 
 I would recommend [Orbstack](https://orbstack.dev), it's lightweight and requires only installation.
 

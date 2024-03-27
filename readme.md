@@ -58,7 +58,7 @@ ore.fetchSSE(
 
 ## `fetchSSE` Function Parameters
 
-- `onBufferReceived`: `function` - Callback function to handle received SSE buffers. Receives the buffer and the parts i.e. new events as a parameter.
+- `onBufferReceived`: `function` - Callback function to handle received SSE buffers. Receives the buffer and the optionally the parts i.e. new events as a parameter.
 - `onStreamEnded`: `function` - Callback function to handle stream end events. Receives the internal state of if the buffer stream is ended.
 - `retries`: `number` (optional) - Optional parameter to specify the maximum number of retry attempts. Default is 3.
 
