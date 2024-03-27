@@ -9,12 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "@glamboyosa/ore",
-    "server-sent events",
-    "SSE",
-    "api"
-  ],
+  "keywords": ["@glamboyosa/ore", "server-sent events", "SSE", "api"],
   "scripts": {
     "build": "tsup",
     "fmt": "pnpm biome format . --write && pnpm biome check . --apply-unsafe "
