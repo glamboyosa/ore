@@ -1,11 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { Ore } from "@glamboyosa/ore";
+import { useEffect, useRef, useState } from "react";
+const ore = new Ore({
+  url: "http://localhost:4000/",
+  headers: {
+    "Cache-Control": "no-cache",
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [chat, setCurrentChat] = useState("");
+  const isFirstRun = useRef(true);
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      console.log("console:");
+      ore.fetchSSE(
+        (buffer, parts) => {
+          console.log("Received buffer:", buffer);
+          setCurrentChat(buffer);
+          // Process the received buffer
 
+          const b = parts[parts.length - 1];
+          console.log("Received parts i.e. events", parts);
+          console.log("Buffer per event", b);
+        },
+        (streamEnded) => {
+          console.log("Stream ended", streamEnded);
+        }
+      );
+    }
+  }, []);
   return (
     <>
       <div>
@@ -18,18 +45,11 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <p>Stream:</p>
+        <p>{chat}</p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

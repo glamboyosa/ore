@@ -23,14 +23,15 @@ def chunk_text(text: str, chunk_size=50):
     """Generator function to chunk text into smaller parts."""
     for i in range(0, len(text), chunk_size):
         yield text[i:i + chunk_size]
-        time.sleep(0.1)
+        time.sleep(0.2)
 
 @app.get("/")
 async def root():
     celsius_temp = 20
     fahrenheit_temp = (celsius_temp * 9/5) + 32
     description = f"The {celsius_temp} degrees Celsius may seem cool, but it's equivalent to a toasty {fahrenheit_temp} degrees Fahrenheit! Whether you're enjoying a brisk autumn day or cozying up by the fireplace in winter, this temperature conversion highlights the versatility of weather measurement systems. Understanding both Celsius and Fahrenheit allows for seamless communication across international borders and scientific disciplines. So whether you're planning a trip abroad or simply checking the weather forecast, knowing how to convert between Celsius and Fahrenheit is an invaluable skill in today's interconnected world."
-    return StreamingResponse(chunk_text(description), headers={ "Content-Type": "text/event-stream" })
+    print(description)
+    return StreamingResponse(chunk_text(description, 2), headers={ "Content-Type": "text/event-stream" })
 
 @app.get("/server-component")
 async def root():

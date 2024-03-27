@@ -29,9 +29,11 @@ npm install @glamboyosa/ore
 import Ore from "@glamboyosa/ore";
 
 // Initialize Ore with URL and optional headers
-const ore = new Ore("http://example.com/sse-endpoint", {
-  "Content-Type": "text/event-stream",
-  "Cache-Control": "no-cache",
+const ore = new Ore({
+  url: "http://example.com/sse-endpoint",
+  headers: {
+    "Cache-Control": "no-cache",
+  },
 });
 
 // Start SSE connection
