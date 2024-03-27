@@ -12,14 +12,25 @@ class Ore {
 
   constructor(options: OreOptions) {
     this.url = options.url;
-    this.headers = options.headers;
+    this.headers = options.headers
+      ? {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+          ...options.headers,
+        }
+      : {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        };
   }
 
   public fetchSSE(
     onBufferReceived: (buffer: string, parts: Array<string>) => void,
     onStreamEnded?: (streamEnded: boolean) => void,
     customHeaders?: HeadersInit,
-    retries: number = this.maxRetries,
+    retries: number = this.maxRetries
   ): void {
     const headers = { ...this.headers, ...customHeaders };
 
@@ -39,7 +50,10 @@ class Ore {
         const reader = response.body?.getReader();
         const decoder = new TextDecoder("utf-8");
         let buffer = "";
-        const processText = ({ done, value }: ReadableStreamReadResult<Uint8Array>): any => {
+        const processText = ({
+          done,
+          value,
+        }: ReadableStreamReadResult<Uint8Array>): any => {
           if (done) {
             this.streamEnded = true;
             if (onStreamEnded) {
@@ -56,7 +70,25 @@ class Ore {
 
           return reader!.read().then(processText);
         };
-        reader?.read().then(processText);
+        reader
+          ?.read()
+          .then(processText)
+          .catch((error) => {
+            if (this.retryCount < retries) {
+              console.error("Error:", error);
+              console.log("Retrying...");
+              this.retryCount++;
+              setTimeout(fetchWithRetry, 1000);
+            } else {
+              console.error(
+                "Max retries exceeded. Cannot establish SSE connection."
+              );
+              this.streamEnded = true;
+              if (onStreamEnded) {
+                onStreamEnded(this.streamEnded);
+              }
+            }
+          });
       } catch (error) {
         if (this.retryCount < retries) {
           console.error("Error:", error);
@@ -64,7 +96,9 @@ class Ore {
           this.retryCount++;
           setTimeout(fetchWithRetry, 1000);
         } else {
-          console.error("Max retries exceeded. Cannot establish SSE connection.");
+          console.error(
+            "Max retries exceeded. Cannot establish SSE connection."
+          );
           this.streamEnded = true;
           if (onStreamEnded) {
             onStreamEnded(this.streamEnded);
