@@ -9,11 +9,19 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": ["@glamboyosa/ore", "server-sent events", "SSE", "api"],
+  "keywords": [
+    "@glamboyosa/ore",
+    "server-sent events",
+    "SSE",
+    "api"
+  ],
   "scripts": {
     "build": "tsup",
     "fmt": "pnpm biome format . --write && pnpm biome check . --apply-unsafe "
   },
+  "files": [
+    "./dist/**"
+  ],
   "devDependencies": {
     "@biomejs/biome": "^1.6.3",
     "@types/node": "^20.11.30",
