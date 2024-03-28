@@ -66,10 +66,6 @@ ore.fetchSSE(
 
 Contributions to @glamboyosa/ore are welcome! If you have suggestions for improvements or encounter any issues, feel free to open an issue or submit a pull request on GitHub.
 
-License
+## License
 
 This project is licensed under the MIT License.
-
-```
-
-```
