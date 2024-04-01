@@ -8,3 +8,7 @@
 - Added option to set maximum retries for connection attempts.
 
 This changelog reflects the initial release of the package and outlines its key features and functionalities. As updates and improvements are made to the package in future releases, the changelog will be updated accordingly to reflect the changes.
+
+# Version 0.0.2 24-04-01
+
+- Add README to package for NPM and co.

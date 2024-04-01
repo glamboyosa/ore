@@ -1,6 +1,6 @@
 {
   "name": "@glamboyosa/ore",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -9,19 +9,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-    "@glamboyosa/ore",
-    "server-sent events",
-    "SSE",
-    "api"
-  ],
+  "keywords": ["@glamboyosa/ore", "server-sent events", "SSE", "api"],
   "scripts": {
     "build": "tsup",
     "fmt": "pnpm biome format . --write && pnpm biome check . --apply-unsafe "
   },
-  "files": [
-    "./dist/**"
-  ],
+  "files": ["./dist/**"],
   "devDependencies": {
     "@biomejs/biome": "^1.6.3",
     "@types/node": "^20.11.30",
