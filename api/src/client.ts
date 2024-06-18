@@ -30,7 +30,7 @@ class Ore {
     onBufferReceived: (buffer: string, parts: Array<string>) => void,
     onStreamEnded?: (streamEnded: boolean) => void,
     customHeaders?: HeadersInit,
-    retries: number = this.maxRetries
+    retries: number = this.maxRetries,
   ): void {
     const headers = { ...this.headers, ...customHeaders };
 
@@ -50,10 +50,7 @@ class Ore {
         const reader = response.body?.getReader();
         const decoder = new TextDecoder("utf-8");
         let buffer = "";
-        const processText = ({
-          done,
-          value,
-        }: ReadableStreamReadResult<Uint8Array>): any => {
+        const processText = ({ done, value }: ReadableStreamReadResult<Uint8Array>): any => {
           if (done) {
             this.streamEnded = true;
             if (onStreamEnded) {
@@ -80,9 +77,7 @@ class Ore {
               this.retryCount++;
               setTimeout(fetchWithRetry, 1000);
             } else {
-              console.error(
-                "Max retries exceeded. Cannot establish SSE connection."
-              );
+              console.error("Max retries exceeded. Cannot establish SSE connection.");
               this.streamEnded = true;
               if (onStreamEnded) {
                 onStreamEnded(this.streamEnded);
@@ -96,9 +91,7 @@ class Ore {
           this.retryCount++;
           setTimeout(fetchWithRetry, 1000);
         } else {
-          console.error(
-            "Max retries exceeded. Cannot establish SSE connection."
-          );
+          console.error("Max retries exceeded. Cannot establish SSE connection.");
           this.streamEnded = true;
           if (onStreamEnded) {
             onStreamEnded(this.streamEnded);
@@ -109,16 +102,16 @@ class Ore {
 
     fetchWithRetry();
   }
-  public async fetchSSEForRSC(
-    customHeaders?: HeadersInit,
-    retries: number = this.maxRetries
-  ) {
+  public async fetchSSEForRSC(customHeaders?: HeadersInit, retries: number = this.maxRetries) {
     const headers = { ...this.headers, ...customHeaders };
 
     try {
+      const { signal } = new AbortController();
       const response = await fetch(this.url, {
         method: "GET",
         headers: headers,
+        cache: "no-store",
+        signal,
       });
 
       if (!response.ok) {
