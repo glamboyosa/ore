@@ -33,7 +33,10 @@ const Client: React.FC<ClientProps> = () => {
     }
   }, []);
   return (
-    <div className="flex w-full items-center justify-center gap-4">
+    <div
+      suppressHydrationWarning
+      className="flex w-full items-center justify-center gap-4"
+    >
       <h4> Client Component:</h4>
       <p className="w-1/2">{chat}</p>
     </div>

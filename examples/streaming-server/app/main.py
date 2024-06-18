@@ -40,4 +40,4 @@ async def root():
     ram_gb = 128
     description = f"Server components are cool and The {server_name} is a powerhouse in terms of performance and reliability. With a staggering {cpu_cores} CPU cores and {ram_gb}GB of RAM, it is capable of handling even the most demanding workloads with ease. Whether you're running complex simulations, hosting virtual machines, or managing large-scale databases, this server delivers unmatched speed and efficiency. Its robust design ensures maximum uptime, keeping your operations running smoothly around the clock. Invest in the {server_name} today and experience unparalleled computing power for your business."
 
-    return StreamingResponse(chunk_text(description), headers={ "Content-Type": "text/event-stream" })
+    return StreamingResponse(chunk_text(description, 5), headers={ "Content-Type": "text/event-stream" })

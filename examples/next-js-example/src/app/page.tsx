@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Client from "@/components/client";
 import { Ore } from "@glamboyosa/ore";
+import { Suspense } from "react";
 
 const ore = new Ore({
   url: "http://localhost:4000/server-component/",
@@ -8,34 +9,40 @@ const ore = new Ore({
     "Cache-Control": "no-cache",
   },
 });
-let chat = "";
-export default function Home() {
-  ore.fetchSSE(
-    (buffer, parts) => {
-      console.log("Received buffer:", buffer);
-      chat += buffer;
-      // Process the received buffer
-
-      // const b = parts[parts.length - 1];
-      // console.log("Received parts i.e. events", parts);
-      // console.log("Buffer per event for server component", b);
-    },
-    (streamEnded) => {
-      console.log("Stream ended", streamEnded);
-    }
+async function RecursiveText({ buffer }: { buffer: any }) {
+  const { done, value } = await buffer.read();
+  console.log(value, done);
+  if (done) return null;
+  const text = new TextDecoder().decode(value);
+  console.log(text);
+  return (
+    <span>
+      {text}
+      <Suspense>
+        <RecursiveText buffer={buffer} />
+      </Suspense>
+    </span>
   );
+}
+export default async function Home() {
+  const stream = await ore.fetchSSEForRSC();
+  console.log(stream);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full flex-col justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
+        <span className="fixed left-0 top-0 flex w-full flex-col justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
           <div className="flex p-4 justify-center items-center gap-4">
             <h4>Server Component stream:</h4>
-            <p className="w-1/2">{chat}</p>
+            <p className="w-1/2">
+              <Suspense>
+                <RecursiveText buffer={stream!.getReader()} />
+              </Suspense>
+            </p>
           </div>
           <div className="flex p-4 justify-center items-center gap-4">
             <Client />
           </div>
-        </p>
+        </span>
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
           <a
             className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
@@ -69,3 +76,5 @@ export default function Home() {
     </main>
   );
 }
+
+export const dynamic = "force-dynamic";
