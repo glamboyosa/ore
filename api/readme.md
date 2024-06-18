@@ -62,6 +62,14 @@ ore.fetchSSE(
 - `onStreamEnded`: `function` - Callback function to handle stream end events. Receives the internal state of if the buffer stream is ended.
 - `retries`: `number` (optional) - Optional parameter to specify the maximum number of retry attempts. Default is 3.
 
+## Working with React Server Components
+
+While Ore is intended to work with client components, it is possible to use it in server components using the `fetchSSEForRSC` function. The function takes optional `retries`: `number` (optional) - Optional parameter to specify the maximum number of retry attempts. Default is 3. and `customHeaders`: `HeadersInit` (optional) - Optional headers to include in the SSE request. Must be an object where keys are header names and values are header values.
+
+### Usage with RSCs
+
+Checkout the `next-js-example` directory for a full example on how to use it with Server Components [here](https://github.com/glamboyosa/ore/blob/main/examples/next-js-example/src/app/page.tsx)
+
 ## Contributing
 
 Contributions to @glamboyosa/ore are welcome! If you have suggestions for improvements or encounter any issues, feel free to open an issue or submit a pull request on GitHub.
